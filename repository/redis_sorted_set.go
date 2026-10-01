@@ -2,7 +2,6 @@ package repository
 
 import (
 	"cmp"
-	"fmt"
 	"slices"
 )
 
@@ -53,7 +52,6 @@ func (s *sortedSet) Store(score int64, key string) error {
 
 	for i, entry := range s.items {
 		if entry.key == key {
-			fmt.Printf(s.name+" Updating an existing entry old = %+v  new = %+v \n", entry, newEntry)
 			// replace older value in place.
 			s.items[i] = newEntry
 			alreadyPresent = true
@@ -63,7 +61,6 @@ func (s *sortedSet) Store(score int64, key string) error {
 
 	// Add new entry as not present already.
 	if !alreadyPresent {
-		fmt.Printf(s.name+" Adding a new entry new = %+v \n", newEntry)
 		s.items = append(s.items, newEntry)
 	}
 
@@ -86,8 +83,6 @@ func (s *sortedSet) Delete(key string) error {
 
 	for i, entry := range s.items {
 		if entry.key == key {
-			fmt.Printf(s.name+" Deleting an entry old = %+v \n", entry)
-
 			// replace with last element & delete last element
 			s.items[i] = s.items[length-1]
 			s.items = s.items[:length-1]
@@ -101,7 +96,6 @@ func (s *sortedSet) Delete(key string) error {
 func (s *sortedSet) ConditionalDelete(key string, score int64) error {
 	for _, entry := range s.items {
 		if entry.key == key && entry.score == score {
-			fmt.Printf(s.name+" Conditionally deleting an entry old = %+v\n", entry)
 			s.Delete(key)
 		}
 	}
@@ -119,8 +113,6 @@ func (s *sortedSet) Dequeue(maxScore int64) (*SortedSetEntry, error) {
 
 	minScoreEntry := s.items[0]
 	if minScoreEntry.score <= maxScore {
-		fmt.Printf(s.name+" Dequeing an entry, entry = %+v  maxscore = %+v \n", minScoreEntry, maxScore)
-
 		length := len(s.items)
 		// removes the first entry from sorted set
 		s.items = s.items[1:length]

@@ -136,7 +136,7 @@ func (n *notificationController) HandleCartEvent(ctx context.Context, event enti
 	}
 
 	nextScheduleAt, _ := n.abandonedCartNotificationConfig.NotifyAt(time.Now(), 0)
-	fmt.Printf(logPrefix+"Creating a new schedule at %v\n", nextScheduleAt)
+	fmt.Printf(logPrefix+"Creating a new schedule at %v currentTime = %v difference = %v\n", nextScheduleAt, time.Now(), time.Until(nextScheduleAt))
 
 	if err = n.schedules.Store(nextScheduleAt.Unix(), cartID); err != nil {
 		fmt.Printf(logPrefix+"failed to create a new schedule. error = %v\n", err)
